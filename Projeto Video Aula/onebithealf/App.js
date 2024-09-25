@@ -8,6 +8,7 @@ export default function App() {
 
     //Tudo o que for colocado dentro do return sera redenrizado na tela
     <View style={styles.container}>
+      <Title/>
       <Main/>
     </View>
   );
@@ -16,8 +17,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#e0e5e5',
+    paddingTop:90,
   },
 });
