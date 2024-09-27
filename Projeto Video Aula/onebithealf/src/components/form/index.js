@@ -1,6 +1,7 @@
 import React, {useState} from  "react"
 import { Text,TextInput, View, Button } from "react-native"
 import ResultImc from "./ResultImc";
+import styles from "./style";
 
 export default function Form(){
 
@@ -33,7 +34,7 @@ function valiationImc(){
 }
 
     return (
-        <View>
+        <View style={styles.formContext}>
             <View>
                 <Text>Altura</Text>
                 <TextInput
