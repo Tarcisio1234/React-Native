@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
         height: "100%",
         alignItems: "center",
         position: "relative",
+        backgroundColor: "#E8F3E2",
     },
     tituloPincial: {
         marginTop: 40,

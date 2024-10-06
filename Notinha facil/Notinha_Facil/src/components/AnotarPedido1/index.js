@@ -1,20 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-import styles from './styles';
 
 
 
 
-export default function MainInicio() {
+
+export default function AnotarFake() {
   return (
     <View style={styles.view}>
-      <Image
-      source={require('../../../assets/logo.png')} style={styles.logo}
-      />
       
-      <Text style={styles.tituloPincial}>Olá, seja bem vindo</Text>
+      <Text style={styles.tituloPincial}>Essa é a tela de Anotar peddo</Text>
       <Text style={styles.tituloSecundadio}>Para criar uma notinha{"\n"}clique no botão abaixo</Text>
-      <Image source={require('../../../assets/seta.png')} style={styles.img2} />
       <TouchableOpacity style={ styles.botaoInicio}><Text style={ styles.textButton}>Iniciar</Text></TouchableOpacity>
     </View>
   );
