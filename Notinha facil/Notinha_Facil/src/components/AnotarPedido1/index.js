@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-
+import styles from './styles';
 
 
 
@@ -8,10 +8,12 @@ import { Button, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-n
 export default function AnotarFake() {
   return (
     <View style={styles.view}>
-      
-      <Text style={styles.tituloPincial}>Essa é a tela de Anotar peddo</Text>
-      <Text style={styles.tituloSecundadio}>Para criar uma notinha{"\n"}clique no botão abaixo</Text>
-      <TouchableOpacity style={ styles.botaoInicio}><Text style={ styles.textButton}>Iniciar</Text></TouchableOpacity>
+      <Image
+        source={require('../../../assets/imagem de uma pessoa.png')} style={styles.logo}
+      />
+      <Text style={styles.tituloPincial}>Dados do Cliente </Text>
+      <Text style={styles.tituloSecundadio}>Adicione os dados do{"\n"}      cliente abaixo</Text>
+      <TouchableOpacity style={ styles.botaoInicio}><Text style={ styles.textButton}>Proximo</Text></TouchableOpacity>
     </View>
   );
 }
