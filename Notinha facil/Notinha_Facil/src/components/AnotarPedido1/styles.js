@@ -4,7 +4,6 @@ const styles = StyleSheet.create({
     view: {
         width: "100%",
         height: "100%",
-        alignItems: "center",
         position: "relative",
         backgroundColor: "#E8F3E2",
     },
@@ -23,6 +22,10 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         width: "55%",
         backgroundColor: "#7BE15C",
+        alignItems: "center",
+        display: "flex",
+        marginLeft: "20.8%",
+        marginTop: 100,
     },
     textButton: {
         fontSize: 18,
@@ -31,15 +34,24 @@ const styles = StyleSheet.create({
         color: "#000000", 
     },
     logo: {
+        marginLeft: "40%",
         marginTop: 40,
         width: 80,
         height: 80,
     },
-    img2: {
-        marginTop: 60,
-        width: 21,
-        height: 90,
-    }
+    titulosTextBox: {
+        marginLeft: 35,
+        padding: 10,
+    },
+    input: {
+        borderColor: 'gray',
+        width: "80%",
+        backgroundColor: "#A3FF87",
+        borderRadius: 12,
+        marginLeft: 30,
+        height: 50,
+    },
+
 });
 
 export default styles;
