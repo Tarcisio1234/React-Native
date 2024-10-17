@@ -4,7 +4,7 @@ import styles from './styles';
 
 export default function MainInicio({ navigation }) {
   const irSobre = () => {
-    navigation.navigate("Inicio");
+    navigation.navigate("DadosCliente");
   };
 
   return (

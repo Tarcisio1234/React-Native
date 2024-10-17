@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         color: "#000000", 
     },
     logo: {
-        marginTop: 100,
+        marginTop: 150,
         width: 150,
         height: 165,
     },

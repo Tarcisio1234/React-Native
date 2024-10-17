@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     },
     logo: {
         marginLeft: "40%",
-        marginTop: 40,
+        marginTop: 90,
         width: 80,
         height: 80,
     },
