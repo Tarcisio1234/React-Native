@@ -4,19 +4,14 @@ import styles from './styles';
 import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function DadosCliente() {
-    //Para a navegação
-    const irPara = () => {
-        navigation.navigate("AnotarPedido_2");
-    };
-
+export default function AnotarPedido_1({ navigation }) {
     // Variáveis para armazenar os valores
     const [nomeProduto, setNomeProduto] = useState('');
     const [pesoProduto, setPesoProduto] = useState('');
     const [valorProduto, setValorProduto] = useState('');
     const [listaProdutos, setListaProdutos] = useState([]);
 
-    const adicionarProduto = async () => {
+    const irSobre = async () => {
         if (nomeProduto.length === 0 || pesoProduto.length === 0 || valorProduto.length === 0) return;
 
         // Cria um novo objeto produto com nome, peso e valor
@@ -33,11 +28,14 @@ export default function DadosCliente() {
         // Salva a lista no AsyncStorage
         await AsyncStorage.setItem('produtos', JSON.stringify(novaLista));
 
-        // Limpa os campos de entrada
+        // Navega para a próxima tela passando a lista atualizada
+        navigation.navigate('AnotarPedido_2', { listaProdutosAtualizada: novaLista });
+
         setNomeProduto('');
         setPesoProduto('');
         setValorProduto('');
     };
+
 
     // Renderizar cada produto da lista
     const renderProduto = ({ item }) => (
@@ -89,13 +87,13 @@ export default function DadosCliente() {
                 <TouchableOpacity style={styles.buttonGreen}>
                     <Text style={styles.buttonText}>Voltar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonGreen}>
-                    <Text style={styles.buttonText} onPress={irPara}>Proximo</Text>
+                <TouchableOpacity style={styles.buttonGreen} onPress={irSobre}>
+                    <Text style={styles.buttonText}>Proximo</Text>
                 </TouchableOpacity>
             </View>
 
             <TouchableOpacity style={styles.buttonRed}>
-                <Text style={styles.buttonText} onPress={adicionarProduto}>Finalizar</Text>
+                <Text style={styles.buttonText}>Finalizar</Text>
             </TouchableOpacity>
 
             {/* Exibe a lista de produtos */}
