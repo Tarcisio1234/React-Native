@@ -1,9 +1,12 @@
 import { Button, StyleSheet, Text, View, TouchableOpacity, Image, TextInput, FlatList } from 'react-native';
-import styles from './styles';
+import styles from '../AnotarPedidos1/styles';
 import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function AnotarPedido_1({ navigation }) {
+export default function AnotarPedido_6({ route, navigation }) {
+
+    const { listaProdutosAtualizada = [] } = route.params;
+
     const [nomeProduto, setNomeProduto] = useState('');
     const [pesoProduto, setPesoProduto] = useState('');
     const [valorProduto, setValorProduto] = useState('');
@@ -23,16 +26,15 @@ export default function AnotarPedido_1({ navigation }) {
 
         await AsyncStorage.setItem('produtos', JSON.stringify(novaLista));
 
-        navigation.navigate('AnotarPedido_2', { listaProdutosAtualizada: novaLista });
+        navigation.navigate('AnotarPedido_7', { listaProdutosAtualizada: novaLista });
 
         setNomeProduto('');
         setPesoProduto('');
         setValorProduto('');
     };
 
-
     const renderProduto = ({ item }) => (
-        // Execultar a função ir sobre aqui para depois renderizar a lista
+    // Execultar a função ir sobre aqui para depois renderizar a lista
 
         <View style={styles.item}>
             <Text style={styles.itemText}>Produto: {item.nome}</Text>
@@ -80,23 +82,21 @@ export default function AnotarPedido_1({ navigation }) {
                 <TouchableOpacity style={styles.buttonGreen}>
                     <Text style={styles.buttonText}>Voltar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonGreen} onPress={irSobre}>
-                    <Text style={styles.buttonText}>Proximo</Text>
+                <TouchableOpacity style={styles.buttonGreen}>
+                    <Text style={styles.buttonText} onPress={irSobre}>Proximo</Text>
                 </TouchableOpacity>
             </View>
 
             <TouchableOpacity style={styles.buttonRed}>
-                <Text style={styles.buttonText}>Finalizar</Text>
+                <Text style={styles.buttonText} onPress={adicionarProduto}>Finalizar</Text>
             </TouchableOpacity>
 
-            {/* Exibe a lista de produtos */}
             <FlatList
                 data={listaProdutos}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={renderProduto}
                 style={styles.lista}
             />
-
         </View>
     );
 }

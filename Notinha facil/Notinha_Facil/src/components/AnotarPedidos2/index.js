@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View, TouchableOpacity, Image, TextInput, FlatList } from 'react-native';
-import styles from './styles';
+import styles from '../AnotarPedidos1/styles';
 import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -8,33 +8,27 @@ export default function AnotarPedido_2({ route, navigation }) {
     // Recupera a lista de produtos atualizada da tela anterior
     const { listaProdutosAtualizada = [] } = route.params;
 
-    // Variáveis para armazenar os valores
     const [nomeProduto, setNomeProduto] = useState('');
     const [pesoProduto, setPesoProduto] = useState('');
     const [valorProduto, setValorProduto] = useState('');
     const [listaProdutos, setListaProdutos] = useState([]);
 
-    // Função para adicionar produto
-    const adicionarProduto = async () => {
+    const irSobre = async () => {
         if (nomeProduto.length === 0 || pesoProduto.length === 0 || valorProduto.length === 0) return;
 
-        // Cria um novo objeto produto com nome, peso e valor
         const novoProduto = {
             nome: nomeProduto,
             peso: pesoProduto,
             valor: valorProduto
         };
 
-        // Adiciona o novo produto à lista de produtos
-        const novaLista = [...listaProdutosAtualizada, novoProduto];
+        const novaLista = [...listaProdutos, novoProduto];
         setListaProdutos(novaLista);
 
-        // Salva a lista no AsyncStorage
         await AsyncStorage.setItem('produtos', JSON.stringify(novaLista));
 
-        // Navega para a próxima tela com a lista atualizada
+        navigation.navigate('AnotarPedido_3', { listaProdutosAtualizada: novaLista });
 
-        // Limpa os campos de entrada
         setNomeProduto('');
         setPesoProduto('');
         setValorProduto('');
@@ -42,6 +36,8 @@ export default function AnotarPedido_2({ route, navigation }) {
 
     // Renderizar cada produto da lista
     const renderProduto = ({ item }) => (
+        // Execultar a função ir sobre aqui para depois renderizar a lista
+
         <View style={styles.item}>
             <Text style={styles.itemText}>Produto: {item.nome}</Text>
             <Text style={styles.itemText}>Peso: {item.peso}</Text>
@@ -51,7 +47,7 @@ export default function AnotarPedido_2({ route, navigation }) {
 
     return (
         <View style={styles.viewmain}>
-            
+            <Image source={require('../../../assets/carrinho.png')} style={styles.imagem}/>
             <Text style={styles.textoPrincipal}>Produto</Text>
             
             <View style={styles.inputView}>
@@ -89,15 +85,14 @@ export default function AnotarPedido_2({ route, navigation }) {
                     <Text style={styles.buttonText}>Voltar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonGreen}>
-                    <Text style={styles.buttonText} onPress={() => navigation.navigate('AnotarPedido_3')}>Proximo</Text>
+                    <Text style={styles.buttonText} onPress={irSobre}>Proximo</Text>
                 </TouchableOpacity>
             </View>
 
             <TouchableOpacity style={styles.buttonRed}>
-                <Text style={styles.buttonText} onPress={adicionarProduto}>Finalizar</Text>
+                <Text style={styles.buttonText} onPress={renderProduto}>Finalizar</Text>
             </TouchableOpacity>
 
-            
             <FlatList
                 data={listaProdutos}
                 keyExtractor={(item, index) => index.toString()}
