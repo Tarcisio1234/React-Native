@@ -1,76 +1,65 @@
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, StyleSheet, TextInput, Button, Text, FlatList, TouchableOpacity, Modal, Alert } from 'react-native';
+import { View, StyleSheet, Text, FlatList, TouchableOpacity, Modal, Button } from 'react-native';
 
-const AnotarPedido = () => {
-    const [nomeProduto, setNomeProduto] = useState('');
-    const [pesoProduto, setPesoProduto] = useState('');
-    const [valorProduto, setValorProduto] = useState('');
+const Carrinho = () => {
     const [listaProdutos, setListaProdutos] = useState([]);
-    const [produtoRemover, setProdutoRemover] = useState(null); // Produto que será removido
+    const [produtoRemover, setProdutoRemover] = useState(null);
     const [modalVisivel, setModalVisivel] = useState(false);
 
-    // Carregar produtos salvos no AsyncStorage ao iniciar
+    // Carregar produtos do AsyncStorage ao iniciar
     useEffect(() => {
         const carregarProdutos = async () => {
-                const produtosSalvos = await AsyncStorage.getItem('ultimoProduto');
-                if (produtosSalvos) {
-                    const produtos = JSON.parse(produtosSalvos);
+            const produtosSalvos = await AsyncStorage.getItem('produtos');
+            if (produtosSalvos) {
+                setListaProdutos(JSON.parse(produtosSalvos));
+            }
         };
         carregarProdutos();
-    }
-}, []);
+    }, []);
 
-const removerProduto = async () => {
-    const listaAtualizada = listaTarefas.filter(t => t !== tarefaRemover);// ele pega o t e olha se o t é diferente do tarefaRemover, verificar se t que é a primeira tarefa é diferente da tarefa que quis remover
-    setListaTarefas(listaAtualizada);//Depois que removi a tarefa eu guardei a informação na lista atualizada
-    await AsyncStorage.setItem('ultimoProduto', JSON.stringify(listaAtualizada));//mando a chave 'tarefas' e a informação que eu quero
-    setTarefaRemover('');//garantir que esvazio a variavel dnv
-    setModalVisivel(false);//Na hora que cliquei em remover eu mostrei o modal sem querer então preciso fazer com que ele desapareça no final
-  }
+    // Função para remover o produto
+    const removerProduto = async () => {
+        const listaAtualizada = listaProdutos.filter(p => p !== produtoRemover);
+        setListaProdutos(listaAtualizada);
+        await AsyncStorage.setItem('produtos', JSON.stringify(listaAtualizada));
+        setProdutoRemover(null);
+        setModalVisivel(false);
+    };
 
     return (
         <View style={styles.container}>
-            <TextInput
-                value={nomeProduto}
-                onChangeText={setNomeProduto}
-                placeholder="Nome do Produto"
-                style={styles.input}
-            />
-            <TextInput
-                value={pesoProduto}
-                onChangeText={setPesoProduto}
-                placeholder="Peso do Produto"
-                keyboardType="numeric"
-                style={styles.input}
-            />
-            <TextInput
-                value={valorProduto}
-                onChangeText={setValorProduto}
-                placeholder="Valor do Produto"
-                keyboardType="numeric"
-                style={styles.input}
-            />
-
+            <Text style={styles.titulo}>Carrinho</Text>
+            
             {listaProdutos.length === 0 ? (
                 <Text style={styles.emptyText}>Nenhum produto adicionado</Text>
             ) : (
-                <FlatList //renderizar os itens
-                data={listaTarefas}
-                renderItem={({ item }) =>(
-                  <View style={styles.itemContainer}>
-                    <Text style={styles.itemText}>{item}</Text>
-                      <TouchableOpacity 
-                      onPress={() => {
-                        setTarefaRemover(item)
-                        setModalVisivel(true)}}>
-                      
-                        <Text style={styles.removerButton}> Remover </Text> 
-                      </TouchableOpacity>
-                  </View>
-                )}
+                <FlatList
+                    data={listaProdutos}
+                    renderItem={({ item }) => (
+                        <View style={styles.itemContainer}>
+                            <Text style={styles.itemText}>{item.peso}kg - {item.nome} - R$ {item.valor}</Text>
+                            <TouchableOpacity 
+                                style={styles.removerButton}
+                                onPress={() => {
+                                    setProdutoRemover(item);
+                                    setModalVisivel(true);
+                                }}
+                            >
+                                <Text style={styles.removerText}>+</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
                 />
             )}
+
+            <TouchableOpacity style={styles.adicionarButton}>
+                <Text style={styles.adicionarText}>Adicionar Itens</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.finalizarButton}>
+                <Text style={styles.finalizarText}>Finalizar</Text>
+            </TouchableOpacity>
 
             <Modal
                 animationType="slide"
@@ -80,9 +69,9 @@ const removerProduto = async () => {
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
-                        <Text>Deseja remover o produto "{produtoRemover?.nome}"?</Text>
-                        <Button title="Remover Produto" onPress={removerProduto} />
-                        <Button title="Cancelar" onPress={() => setModalVisivel(false)} />
+                        <Text>Deseja remover o produto ?</Text>
+                        <Button title="Remover Produto" onPress={removerProduto} style={styles.botaoEscolha} />
+                        <Button title="Cancelar" onPress={() => setModalVisivel(false)} style={styles.botaoEscolha} />
                     </View>
                 </View>
             </Modal>
@@ -92,35 +81,74 @@ const removerProduto = async () => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
         flex: 1,
+        backgroundColor: '#E8F3E2',
+        paddingHorizontal: 20,
+        paddingTop: 20,
     },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 10,
-        marginBottom: 10,
-        borderRadius: 5,
+    titulo: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginTop: 40,
+        marginBottom: 30,
     },
     itemContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
+        backgroundColor: '#E0E0E0',
+        padding: 9,
+        marginBottom: 10,
+        borderRadius: 10,
     },
     itemText: {
         fontSize: 16,
+        flex: 1,
     },
     removerButton: {
-        color: 'red',
+        backgroundColor: '#EF5454',
+        padding: 10,
+        borderRadius: 25,
+    },
+    removerText: {
+        color: 'white',
+        fontSize: 24,
+        fontWeight: 'bold',
+    },
+    adicionarButton: {
+        width: "85%",
+        marginLeft: 20,
+        backgroundColor: '#7BE15C',
+        paddingVertical: 15,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    adicionarText: {
+        color: 'black',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    finalizarButton: {
+        width: "85%",
+        marginLeft: 20,
+        backgroundColor: '#F28A8A',
+        paddingVertical: 15,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginBottom: 55,
+    },
+    finalizarText: {
+        color: 'black',
+        fontSize: 18,
+        fontWeight: 'bold',
     },
     emptyText: {
         fontSize: 18,
         textAlign: 'center',
-        marginVertical: 20,
         color: 'gray',
+        marginTop: 20,
     },
     modalContainer: {
         flex: 1,
@@ -129,12 +157,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContent: {
-        backgroundColor: 'white',
-        padding: 20,
-        borderRadius: 10,
-        width: '80%',
         alignItems: 'center',
+        backgroundColor: 'white',
+        padding: 25,
+        borderRadius: 10,
+        width: '90%',
     },
 });
 
-export default AnotarPedido;
+export default Carrinho;

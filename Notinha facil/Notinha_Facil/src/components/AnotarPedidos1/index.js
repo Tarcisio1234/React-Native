@@ -27,18 +27,25 @@ export default function AnotarPedido_1({ navigation }) {
         navigation.navigate("Carrinho");
       };
 
-    const irSobre = async () => {
+      const irSobre = async () => {
         if (nomeProduto.length === 0 || pesoProduto.length === 0 || valorProduto.length === 0) return;
-
+    
         const novoProduto = {
-            nome: nomeProduto,
             peso: pesoProduto,
+            nome: nomeProduto,
             valor: valorProduto
         };
-
-        // Salva o novo produto no AsyncStorage e o define como o último produto inserido
-        await AsyncStorage.setItem('ultimoProduto', JSON.stringify(novoProduto));
-
+    
+        // Obtenha a lista existente
+        const produtosSalvos = await AsyncStorage.getItem('produtos');
+        const listaProdutos = produtosSalvos ? JSON.parse(produtosSalvos) : [];
+    
+        // Adicione o novo produto à lista
+        listaProdutos.push(novoProduto);
+    
+        // Salve a lista atualizada no AsyncStorage
+        await AsyncStorage.setItem('produtos', JSON.stringify(listaProdutos));
+    
         // Limpa os campos para o próximo produto
         setNomeProduto('');
         setPesoProduto('');
@@ -49,9 +56,10 @@ export default function AnotarPedido_1({ navigation }) {
     const restaurarDados = async () => {
         const produtoSalvo = await AsyncStorage.getItem('ultimoProduto');
         if (produtoSalvo) {
-            const { nome, peso, valor } = JSON.parse(produtoSalvo);
-            setNomeProduto(nome || '');
+            const { peso, nome, valor } = JSON.parse(produtoSalvo);
+            
             setPesoProduto(peso || '');
+            setNomeProduto(nome || '');
             setValorProduto(valor || '');
         }
     };
