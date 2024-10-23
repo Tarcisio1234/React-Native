@@ -1,13 +1,31 @@
-import { Button, StyleSheet, Text, View, TouchableOpacity, Image, TextInput, FlatList } from 'react-native';
+import { Button, StyleSheet, Text, View, TouchableOpacity, Image, TextInput } from 'react-native';
 import styles from './styles';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AnotarPedido_1({ navigation }) {
     const [nomeProduto, setNomeProduto] = useState('');
     const [pesoProduto, setPesoProduto] = useState('');
     const [valorProduto, setValorProduto] = useState('');
-    const [listaProdutos, setListaProdutos] = useState([]);
+
+    // Função para carregar as últimas informações salvas do AsyncStorage ao iniciar
+    useEffect(() => {
+        const carregarUltimosValores = async () => {
+            const produtoSalvo = await AsyncStorage.getItem('ultimoProduto');
+            if (produtoSalvo) {
+                const { nome, peso, valor } = JSON.parse(produtoSalvo);
+                setNomeProduto(nome || '');
+                setPesoProduto(peso || '');
+                setValorProduto(valor || '');
+            }
+        };
+        carregarUltimosValores();
+    }, []);
+
+
+    const irParaCarrinho = () => {
+        navigation.navigate("Carrinho");
+      };
 
     const irSobre = async () => {
         if (nomeProduto.length === 0 || pesoProduto.length === 0 || valorProduto.length === 0) return;
@@ -18,34 +36,31 @@ export default function AnotarPedido_1({ navigation }) {
             valor: valorProduto
         };
 
-        const novaLista = [...listaProdutos, novoProduto];
-        setListaProdutos(novaLista);
+        // Salva o novo produto no AsyncStorage e o define como o último produto inserido
+        await AsyncStorage.setItem('ultimoProduto', JSON.stringify(novoProduto));
 
-        await AsyncStorage.setItem('produtos', JSON.stringify(novaLista));
-
-        navigation.navigate('AnotarPedido_2', { listaProdutosAtualizada: novaLista });
-
+        // Limpa os campos para o próximo produto
         setNomeProduto('');
         setPesoProduto('');
         setValorProduto('');
     };
 
-
-    const renderProduto = ({ item }) => (
-        // Execultar a função ir sobre aqui para depois renderizar a lista
-
-        <View style={styles.item}>
-            <Text style={styles.itemText}>Produto: {item.nome}</Text>
-            <Text style={styles.itemText}>Peso: {item.peso}</Text>
-            <Text style={styles.itemText}>Valor: {item.valor}</Text>
-        </View>
-    );
+    // Função para restaurar os últimos valores salvos nos TextInputs
+    const restaurarDados = async () => {
+        const produtoSalvo = await AsyncStorage.getItem('ultimoProduto');
+        if (produtoSalvo) {
+            const { nome, peso, valor } = JSON.parse(produtoSalvo);
+            setNomeProduto(nome || '');
+            setPesoProduto(peso || '');
+            setValorProduto(valor || '');
+        }
+    };
 
     return (
         <View style={styles.viewmain}>
             <Image source={require('../../../assets/carrinho.png')} style={styles.imagem}/>
             <Text style={styles.textoPrincipal}>Produto</Text>
-            
+
             <View style={styles.inputView}>
                 <Text style={styles.text}>Peso:</Text>
                 <TextInput 
@@ -77,26 +92,17 @@ export default function AnotarPedido_1({ navigation }) {
             </View>
 
             <View style={styles.row}>
-                <TouchableOpacity style={styles.buttonGreen}>
+                <TouchableOpacity style={styles.buttonGreen} onPress={restaurarDados}>
                     <Text style={styles.buttonText}>Voltar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonGreen} onPress={irSobre}>
-                    <Text style={styles.buttonText}>Proximo</Text>
+                    <Text style={styles.buttonText}>Próximo</Text>
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.buttonRed}>
-                <Text style={styles.buttonText}>Finalizar</Text>
+            <TouchableOpacity style={styles.buttonRed} onPress={irParaCarrinho}>
+                <Text style={styles.buttonText}>Ver Carrinho</Text>
             </TouchableOpacity>
-
-            {/* Exibe a lista de produtos */}
-            <FlatList
-                data={listaProdutos}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={renderProduto}
-                style={styles.lista}
-            />
-
         </View>
     );
 }
