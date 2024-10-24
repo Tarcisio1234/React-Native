@@ -1,4 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack'; 
+import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native'; 
 import MainInicio from './src/components/MainInicio';
 import DadosCliente from './src/components/DadosCliente/index';

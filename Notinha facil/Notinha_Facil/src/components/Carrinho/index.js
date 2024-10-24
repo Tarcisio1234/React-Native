@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, StyleSheet, Text, FlatList, TouchableOpacity, Modal, Button } from 'react-native';
+import { View, StyleSheet, Text, FlatList, TouchableOpacity, Modal, Button, Alert } from 'react-native';
+import {Clipboard} from 'react-native';
+
+const irSobre = () => {
+    navigation.navigate("DadosCliente");
+};
 
 const Carrinho = () => {
     const [listaProdutos, setListaProdutos] = useState([]);
@@ -27,6 +32,21 @@ const Carrinho = () => {
         setModalVisivel(false);
     };
 
+    // Função para finalizar, copiar para a área de transferência e limpar AsyncStorage
+    const finalizarCompra = async () => {
+        const textoProdutos = listaProdutos.map(produto => `${produto.peso}kg - ${produto.nome} - R$${produto.valor}`).join('\n');
+
+        // Copiar a lista de produtos para a área de transferência
+        Clipboard.setString(textoProdutos);
+
+        // Limpar o AsyncStorage
+        await AsyncStorage.removeItem('produtos');
+        setListaProdutos([]);
+
+        // Exibir um alerta confirmando a cópia e a limpeza
+        Alert.alert('Finalizado', 'A lista de produtos foi copiada e os dados foram apagados.');
+    };
+
     return (
         <View style={styles.container}>
             <Text style={styles.titulo}>Carrinho</Text>
@@ -46,7 +66,7 @@ const Carrinho = () => {
                                     setModalVisivel(true);
                                 }}
                             >
-                                <Text style={styles.removerText}>+</Text>
+                                <Text style={styles.removerText}>-</Text>
                             </TouchableOpacity>
                         </View>
                     )}
@@ -54,10 +74,10 @@ const Carrinho = () => {
                 />
             )}
 
-            <TouchableOpacity style={styles.adicionarButton}>
+            <TouchableOpacity style={styles.adicionarButton} onPress={irSobre}>
                 <Text style={styles.adicionarText}>Adicionar Itens</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.finalizarButton}>
+            <TouchableOpacity style={styles.finalizarButton} onPress={finalizarCompra}>
                 <Text style={styles.finalizarText}>Finalizar</Text>
             </TouchableOpacity>
 
