@@ -9,7 +9,7 @@ export default function AnotarPedido_1({ navigation }) {
     const [valorProduto, setValorProduto] = useState('');
 
     // Função para carregar as últimas informações salvas do AsyncStorage ao iniciar
-    useEffect(() => {
+   /* useEffect(() => {
         const carregarUltimosValores = async () => {
             const produtoSalvo = await AsyncStorage.getItem('ultimoProduto');
             if (produtoSalvo) {
@@ -20,7 +20,7 @@ export default function AnotarPedido_1({ navigation }) {
             }
         };
         carregarUltimosValores();
-    }, []);
+    }, []);*/
 
 
     const irParaCarrinho = () => {
@@ -50,18 +50,6 @@ export default function AnotarPedido_1({ navigation }) {
         setNomeProduto('');
         setPesoProduto('');
         setValorProduto('');
-    };
-
-    // Função para restaurar os últimos valores salvos nos TextInputs
-    const restaurarDados = async () => {
-        const produtoSalvo = await AsyncStorage.getItem('ultimoProduto');
-        if (produtoSalvo) {
-            const { peso, nome, valor } = JSON.parse(produtoSalvo);
-            
-            setPesoProduto(peso || '');
-            setNomeProduto(nome || '');
-            setValorProduto(valor || '');
-        }
     };
 
     return (
@@ -100,9 +88,6 @@ export default function AnotarPedido_1({ navigation }) {
             </View>
 
             <View style={styles.row}>
-                <TouchableOpacity style={styles.buttonGreen} onPress={restaurarDados}>
-                    <Text style={styles.buttonText}>Voltar</Text>
-                </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonGreen} onPress={irSobre}>
                     <Text style={styles.buttonText}>Próximo</Text>
                 </TouchableOpacity>

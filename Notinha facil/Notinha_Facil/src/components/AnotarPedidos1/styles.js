@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     },
 
     buttonGreen: {
+        width: "60%",
         marginTop: 25,
         backgroundColor: '#7BE15C',
         paddingVertical: 15,
@@ -55,6 +56,7 @@ const styles = StyleSheet.create({
     },
 
     buttonRed: {
+        width: "60%",
         backgroundColor: '#F28A8A',
         paddingVertical: 15,
         paddingHorizontal: 30,

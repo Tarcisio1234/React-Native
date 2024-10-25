@@ -23,6 +23,8 @@ const Carrinho = () => {
         carregarProdutos();
     }, []);
 
+    
+
     // Função para remover o produto
     const removerProduto = async () => {
         const listaAtualizada = listaProdutos.filter(p => p !== produtoRemover);
@@ -34,7 +36,7 @@ const Carrinho = () => {
 
     // Função para finalizar, copiar para a área de transferência e limpar AsyncStorage
     const finalizarCompra = async () => {
-        const textoProdutos = listaProdutos.map(produto => `${produto.peso}kg - ${produto.nome} - R$${produto.valor}`).join('\n');
+        const textoProdutos = listaProdutos.map(produto => `${produto.peso}kg  -  ${produto.nome} -   R$${produto.valor}`).join('\n');
 
         // Copiar a lista de produtos para a área de transferência
         Clipboard.setString(textoProdutos);
