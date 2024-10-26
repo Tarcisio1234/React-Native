@@ -2,14 +2,19 @@ import { Button, StyleSheet, Text, View, TouchableOpacity, Image, TextInput } fr
 import styles from './styles';
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-export default function AnotarPedido_1({ navigation }) {
+export default function AnotarPedido_1() {
+    const navigation = useNavigation();
+    const route = useRoute();
+    
     const [nomeProduto, setNomeProduto] = useState('');
     const [pesoProduto, setPesoProduto] = useState('');
     const [valorProduto, setValorProduto] = useState('');
+    const { nomeCliente = '', enderecoCliente = '' } = route.params || {};
 
     // Função para carregar as últimas informações salvas do AsyncStorage ao iniciar
-   /* useEffect(() => {
+    /* useEffect(() => {
         const carregarUltimosValores = async () => {
             const produtoSalvo = await AsyncStorage.getItem('ultimoProduto');
             if (produtoSalvo) {
@@ -20,12 +25,14 @@ export default function AnotarPedido_1({ navigation }) {
             }
         };
         carregarUltimosValores();
-    }, []);*/
-
+    }, []); */
 
     const irParaCarrinho = () => {
-        navigation.navigate("Carrinho");
-      };
+        navigation.navigate("Carrinho", {
+          nomeCliente,
+          enderecoCliente,
+        });
+    };
 
       const irSobre = async () => {
         if (nomeProduto.length === 0 || pesoProduto.length === 0 || valorProduto.length === 0) return;
