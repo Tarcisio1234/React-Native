@@ -56,7 +56,7 @@ const Carrinho = () => {
     const finalizarCompra = async () => {
         const textoProdutos = listaProdutos.map(produto => `${produto.peso}kg  -  ${produto.nome} -   R$${produto.valor}`).join('\n');
     
-        const textoParaCopiar = `Cliente: ${nomeCliente || 'N/A'}\nEndereço: ${enderecoCliente || 'N/A'}\n\n${textoProdutos}\nTotal: R$${total.toFixed(2)}`;
+        const textoParaCopiar = `Cliente: ${nomeCliente || 'N/A'}\nEndereço: ${enderecoCliente || 'N/A'}\n\n${textoProdutos}\n\nTotal: R$${total.toFixed(2)}`;
 
     
         // Copiar para a área de transferência
@@ -66,7 +66,16 @@ const Carrinho = () => {
         await AsyncStorage.removeItem('produtos');
         
         // Exibir um alerta confirmando a cópia e a limpeza
-        Alert.alert('Finalizado', 'A lista de produtos foi copiada com sucesso!!!!');
+        Alert.alert(
+            'Finalizado',
+            'A lista de produtos foi copiada com sucesso!',
+            [
+                {
+                    text: 'OK',
+                    onPress: () => navigation.navigate("Home") // Redireciona para MainInicio
+                }
+            ]
+        );
     
         setListaProdutos([]);
         setTotal(0);

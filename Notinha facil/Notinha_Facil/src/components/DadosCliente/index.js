@@ -21,21 +21,24 @@ export default function DadosCliente({ navigation }) {
       />
       <Text style={styles.tituloPincial}>Dados do Cliente</Text>
       <Text style={styles.tituloSecundadio}>Adicione os dados do{"\n"}cliente abaixo</Text>
+      <View style={styles.inputView}>
+        <Text style={styles.text}>Nome:</Text>
+        <TextInput
+          value={nomeCliente}
+          onChangeText={setNomeCliente}
+          style={styles.input}
+        />
+      </View>
 
-      <Text style={styles.titulosTextBox}>Nome:</Text>
-      <TextInput
-        value={nomeCliente}
-        onChangeText={setNomeCliente}
-        style={styles.input}
-      />
 
-      <Text style={styles.titulosTextBox}>Endereço:</Text>
-      <TextInput
-        value={enderecoCliente}
-        onChangeText={setEnderecoCliente}
-        style={styles.input}
-      />
-
+      <View style={styles.inputView}>
+        <Text style={styles.text}>Endereço:</Text>
+        <TextInput
+          value={enderecoCliente}
+          onChangeText={setEnderecoCliente}
+          style={styles.input}
+        />
+      </View>
       <TouchableOpacity style={styles.botaoInicio}>
         <Text style={styles.textButton} onPress={irSobre}>Proximo</Text>
       </TouchableOpacity>

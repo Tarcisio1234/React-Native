@@ -39,10 +39,6 @@ const styles = StyleSheet.create({
         width: 80,
         height: 80,
     },
-    titulosTextBox: {
-        marginLeft: 35,
-        padding: 10,
-    },
     input: {
         borderColor: 'gray',
         width: "80%",
@@ -50,6 +46,24 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         marginLeft: 30,
         height: 50,
+    },
+    inputView: {
+        margin: 18,
+        width: "90%",
+        height: 75,
+        backgroundColor: "#A3FF87",
+        borderRadius: 12,
+    },
+     text: {
+        marginLeft: 15,
+        marginTop: 5,
+    },
+    input: {
+        marginTop: 9,
+        marginLeft: 14,
+        width: "90%",
+        borderBottomWidth: 1,
+        borderBottomColor: 'black',
     },
 
 });
