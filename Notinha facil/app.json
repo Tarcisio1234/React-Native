@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "711d792b-1f09-4024-9934-7dbb0f6f7929"
+      }
+    },
+    "android": {
+      "package": "com.tarcisio1234.notinhafacil"
+    }
+  }
+}

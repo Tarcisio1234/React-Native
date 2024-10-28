@@ -11,6 +11,7 @@ const Carrinho = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const { nomeCliente = '', enderecoCliente = '' } = route.params || {};
+    const [produtoRemover, setProdutoRemover] = useState(null);
     const [modalVisivel, setModalVisivel] = useState(false);
     const [listaProdutos, setListaProdutos] = useState([]);
     const [total, setTotal] = useState(0);
